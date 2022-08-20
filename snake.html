@@ -3,26 +3,29 @@
 <body style="background-color:grey;">
     <script>
 
-        positionX = py = 10;
-        gs = tc = 20;
-        accelerationX = accelerationY = 15;
+        let positionX = 10;
+		let positionY = 10;
+        gs = 20;
+		tc = 20;
+        let accelerationX = 10;
+		let accelerationY = 15;
         velocityX = velocityY = 0;
         positions = [];
         endOfSnake = 5;
         function executeSnake() {
             positionX += velocityX;
-            py += velocityY;
+            positionY += velocityY;
             if (positionX < 0) {
                 positionX = tc - 1;
             }
             if (positionX > tc - 1) {
                 positionX = 0;
             }
-            if (py < 0) {
-                py = tc - 1;
+            if (positionY < 0) {
+                positionY = tc - 1;
             }
-            if (py > tc - 1) {
-                py = 0;
+            if (positionY > tc - 1) {
+                positionY = 0;
             }
             context.fillStyle = "white";
             context.fillRect(0, 0, canvas.width, canvas.height);
@@ -30,16 +33,16 @@
             context.fillStyle = "black";
             for (var i = 0; i < positions.length; i++) {
                 context.fillRect(positions[i].x * gs, positions[i].y * gs, gs - 2, gs - 2);
-                if (positions[i].x == positionX && positions[i].y == py) {
+                if (positions[i].x == positionX && positions[i].y == positionY) {
                     endOfSnake = 5;
                 }
             }
-            positions.push({ x: positionX, y: py });
+            positions.push({ x: positionX, y: positionY });
             while (positions.length > endOfSnake) {
                 positions.shift();
             }
 
-            if (accelerationX == positionX && accelerationY == py) {
+            if (accelerationX == positionX && accelerationY == positionY) {
                 endOfSnake++;
                 accelerationX = Math.floor(Math.random() * tc);
                 accelerationY = Math.floor(Math.random() * tc);
