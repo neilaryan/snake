@@ -1,0 +1,85 @@
+<canvas id="gc" width="400" height="400"></canvas>
+
+<body style="background-color:grey;">
+    <script>
+
+        positionX = py = 10;
+        gs = tc = 20;
+        accelerationX = accelerationY = 15;
+        velocityX = velocityY = 0;
+        positions = [];
+        endOfSnake = 5;
+        function executeSnake() {
+            positionX += velocityX;
+            py += velocityY;
+            if (positionX < 0) {
+                positionX = tc - 1;
+            }
+            if (positionX > tc - 1) {
+                positionX = 0;
+            }
+            if (py < 0) {
+                py = tc - 1;
+            }
+            if (py > tc - 1) {
+                py = 0;
+            }
+            context.fillStyle = "white";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            context.fillStyle = "black";
+            for (var i = 0; i < positions.length; i++) {
+                context.fillRect(positions[i].x * gs, positions[i].y * gs, gs - 2, gs - 2);
+                if (positions[i].x == positionX && positions[i].y == py) {
+                    endOfSnake = 5;
+                }
+            }
+            positions.push({ x: positionX, y: py });
+            while (positions.length > endOfSnake) {
+                positions.shift();
+            }
+
+            if (accelerationX == positionX && accelerationY == py) {
+                endOfSnake++;
+                accelerationX = Math.floor(Math.random() * tc);
+                accelerationY = Math.floor(Math.random() * tc);
+            }
+            context.fillStyle = "red";
+            context.fillRect(accelerationX * gs, accelerationY * gs, gs - 2, gs - 2);
+        }
+        function keyPush(evt) {
+            switch (evt.keyCode) {
+                case 37:
+                    velocityX = -1; velocityY = 0;
+                    break;
+                case 38:
+                    velocityX = 0; velocityY = -1;
+                    break;
+                case 39:
+                    velocityX = 1; velocityY = 0;
+                    break;
+                case 40:
+                    velocityX = 0; velocityY = 1;
+                    break;
+            }
+        }
+
+        window.onload = function () {
+            canvas = document.getElementById("gc");
+            context = canvas.getContext("2d");
+            document.addEventListener("keydown", keyPush);
+            setInterval(executeSnake, 1000 / 10);
+        }
+    </script>
+    <div style="position:absolute; left:30px; margin-top: -20px;">
+        <h1> Creator: Neil Aryan</h1>
+        <h2>Instructions to play:</h2>
+        <ol>
+            <li>Click anywhere in the window.</li>
+            <li>Use any of the arrows on your keyboard to begin the game.</li>
+            <li>Use the arrows to move your snake around the board.</li>
+            <li>Eat as many apples as you can!</li>
+            <li>Avoid crashing the snake into itself. Don't worry about the borders</li>
+        </ol>
+    </div>
+</body>
